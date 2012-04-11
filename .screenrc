@@ -1,0 +1,72 @@
+#
+# Muncus' .screenrc. 
+# loosely based on ian's config from around the turn of the century.
+#
+
+# lots of history.
+defscrollback 2000
+
+# no annoying bell, please
+vbell on
+vbell_msg ""
+
+# detach on hangup
+autodetach on
+
+# don't display the copyright page
+startup_message off
+
+# make the shell in every window a login shell
+#shell -$SHELL
+
+# autoaka testing
+# shellaka '> |tcsh'
+# shellaka '$ |sh'
+
+# set every new windows hardstatus line to somenthing descriptive
+# defhstatus "screen: ^En (^Et)"
+
+# don't kill window after the process died
+# zombie "^["
+
+################
+#
+# keybindings
+#
+
+#remove some stupid / dangerous key bindings
+bind k
+bind ^k
+bind .
+bind ^\
+bind \\
+bind ^h
+bind h
+#make them better
+bind 'K' kill
+bind 'I' login on
+bind 'O' login off
+bind '}' history
+#for regions:
+bind 'k' focus up
+bind 'j' focus down
+
+################
+#
+# default windows
+#
+
+# screen -t local 0
+# screen -t mail 1 elm
+# screen -t 40 2 rlogin faui40
+
+# caption always "%3n %t%? @%u%?%? [%h]%?"
+# hardstatus alwaysignore
+# hardstatus alwayslastline "%w"
+# from armando.
+#hardstatus alwayslastline "%{-b gk}%-w%{+b kg}%50>%n %t%{-b gk}%+w%<"
+#hardstatus alwayslastline "%{!}[%n %t]"
+#hardstatus alwayslastline "%{-b gk}%-w%{+b kg}%50>%n"
+caption splitonly "%3n %t%? @%u%?%? [%h]%?"
+#caption always "%{-b gk}%-w%{+b kg}%50>%n %t%{-b gk}%+w%<"
+hardstatus alwayslastline "%-Lw%{= BW}%50>%n%f* %t%{-}%+Lw%<"

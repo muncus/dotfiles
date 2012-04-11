@@ -1,0 +1,6 @@
+# swap files
+.*.swp
+.*.swo
+# compiled java and python files
+.*.class
+*.pyc

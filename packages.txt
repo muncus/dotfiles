@@ -1,0 +1,4 @@
+# Debian/Ubuntu packages I generally want installed.
+vim
+git
+irssi

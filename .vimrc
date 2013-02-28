@@ -25,11 +25,15 @@ vnoremap < <<CR>gv
 map Q <silent>
 map q: <silent>
 map K <silent>
-map q <silent>
+
+" Visual navigation, instead of linewise.
+nmap j gj
+nmap k gk
 
 "---------------------------------
 " Options
 "---------------------------------
+set background=dark
 set nocompatible
 set ai
 set backspace=2

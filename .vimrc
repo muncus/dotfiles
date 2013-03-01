@@ -21,9 +21,16 @@ map \w <Esc>:set wrap!<CR>:set wrap?<CR>
 vnoremap > ><CR>gv
 vnoremap < <<CR>gv
 
+" Visual movement for jk instead of line-wise.
+nmap j gj
+nmap k gk
+
+" nerdtree explorer toggle.
+nmap \e :NERDTreeToggle<CR>
+
+
 " Squelch some annoying default behaviors..
 map Q <silent>
-map q: <silent>
 map K <silent>
 
 " Visual navigation, instead of linewise.
@@ -99,4 +106,4 @@ autocmd BufReadCmd *.bfe :r! bcrypt -ro %
 "autocmd BufWriteCmd *.bfe :w - | bcrypt -ro %
 
 " load local settings, if any.
-"source ~/.vimlocal
+source ~/.vimlocal

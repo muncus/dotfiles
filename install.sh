@@ -121,8 +121,11 @@ for rc in vim gvim; do
         touch $HOME/.${rc}local
     fi
 done
-link $basedir/.vim/_vimoutliner $HOME/.vimoutliner
-link $basedir/.vim/_vimoutlinerrc $HOME/.vimoutlinerrc
+
+# create vim_local here, because conditionals in vim are hard.
+if [ ! -e $HOME/.vim_local ]; then
+  touch $HOME/.vim_local
+fi
 
 note "Initializing tools..."
 if has git; then

@@ -130,7 +130,9 @@ fi
 note "Initializing tools..."
 if has git; then
     # Post-install scripts might customize this further.
-    cp -v $basedir/.gitconfig.base $HOME/.gitconfig
+    if [ ! -e $HOME/.gitconfig ]; then
+      cp -v $basedir/.gitconfig.base $HOME/.gitconfig
+    fi
 fi
 
 note "Running post-install script, if any..."

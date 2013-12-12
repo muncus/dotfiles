@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #
+# PushBullet Relay (aka- PBR)
 # simple command to send note via PushBullet (http://pushbullet.com).
 # Requires the installation of the pushbullet.py module from
 # https://github.com/randomchars/pushbullet.py
@@ -13,8 +14,9 @@ import yaml
 from optparse import OptionParser
 
 parser = OptionParser()
-parser.add_option("-t", "--title", dest="title", help="title for note")
-parser.add_option("-b", "--body", dest="body", help="body for note")
+parser.add_option("-t", "--title", dest="title", help="title for note",
+    default="")
+parser.add_option("-b", "--body", dest="body", help="body for note", default="")
 
 (options, args) = parser.parse_args()
 

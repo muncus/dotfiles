@@ -1,0 +1,7 @@
+[begin] (fluxbox)
+[exec] (Terminal) {/usr/bin/gnome-terminal}
+[exec] (Chrome) {/usr/bin/google-chrome}
+[exec] (Chrome Incognito) {/usr/bin/google-chrome --incognito}
+[separator]
+[include] (/etc/X11/fluxbox/fluxbox-menu)
+[end]

@@ -2,3 +2,5 @@
 vim
 git
 irssi
+python-pip
+python-requests

@@ -9,6 +9,8 @@
     ci = commit
     co = checkout
     cia = commit -a
+    civ = commit -v
+    civa = commit -av
     revert-pending = checkout #reverts a pending change, not checked in.
     rollback-last = revert HEAD^ # un-do last commit.
     current-branch = !sh -c 'git branch | grep \"*\" | cut -d \" \" -f 2' -

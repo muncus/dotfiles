@@ -6,3 +6,5 @@ vim install
 git install
 irssi install
 workrave install
+python-pip        install
+python-requests   install

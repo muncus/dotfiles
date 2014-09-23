@@ -19,6 +19,8 @@
     svnup = svn rebase
     svnpush = svn dcommit
 
-
 [core]
     excludesfile = ~/.gitignore
+
+[push]
+    default = simple

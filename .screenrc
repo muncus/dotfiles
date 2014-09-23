@@ -3,8 +3,11 @@
 # loosely based on ian's config from around the turn of the century.
 #
 
+# Unicode, please.
+defutf8 on
+
 # lots of history.
-defscrollback 2000
+defscrollback 200000
 
 # no annoying bell, please
 vbell on
@@ -18,10 +21,6 @@ startup_message off
 
 # make the shell in every window a login shell
 #shell -$SHELL
-
-# autoaka testing
-# shellaka '> |tcsh'
-# shellaka '$ |sh'
 
 # set every new windows hardstatus line to somenthing descriptive
 # defhstatus "screen: ^En (^Et)"
@@ -55,7 +54,8 @@ bind 'j' focus down
 #
 # default windows
 #
-
+screen -t irc 0
+screen -t git 1
 # screen -t local 0
 # screen -t mail 1 elm
 # screen -t 40 2 rlogin faui40

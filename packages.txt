@@ -2,9 +2,11 @@
 # to use this (probably need sudo):
 #  dpkg --set-selections < packages.txt
 #  apt-get -u dselect-upgrade
-vim install
 git install
 irssi install
-workrave install
+python-jinja2
+python-markdown   install
 python-pip        install
 python-requests   install
+vim install
+workrave install

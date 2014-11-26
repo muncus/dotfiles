@@ -1,6 +1,10 @@
-# Debian/Ubuntu packages I generally want installed.
-vim
-git
-irssi
-python-pip
-python-requests
+# Apt package selections.
+# to use this (probably need sudo):
+#  dpkg --set-selections < packages.txt
+#  apt-get -u dselect-upgrade
+vim install
+git install
+irssi install
+workrave install
+python-pip        install
+python-requests   install

@@ -2,16 +2,24 @@
     name = "Marc Dougherty"
     email = "muncus@gmail.com"
 
+[github]
+  user = muncus
+
 [alias]
     ci = commit
     co = checkout
     cia = commit -a
+    civ = commit -v
+    civa = commit -av
     revert-pending = checkout #reverts a pending change, not checked in.
     rollback-last = revert HEAD^ # un-do last commit.
+    current-branch = !sh -c 'git branch | grep \"*\" | cut -d \" \" -f 2' -
+    today = diff --stat 'HEAD@{midnight}'
+    yesterday = diff --stat 'HEAD@{yesterday}' 'HEAD@{midnight}'
+
     #svn aliases.
     svnup = svn rebase
     svnpush = svn dcommit
-    current-branch = !sh -c 'git branch | grep \"*\" | cut -d \" \" -f 2' -
 
 [core]
     excludesfile = ~/.gitignore

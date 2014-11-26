@@ -28,14 +28,9 @@ nmap k gk
 " nerdtree explorer toggle.
 nmap \e :NERDTreeToggle<CR>
 
-
 " Squelch some annoying default behaviors..
 map Q <silent>
 map K <silent>
-
-" Visual navigation, instead of linewise.
-nmap j gj
-nmap k gk
 
 "---------------------------------
 " Options

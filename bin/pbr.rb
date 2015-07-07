@@ -34,18 +34,12 @@ config = YAML.load_file(configfile)
 # * pull push content from flags.
 
 c = Washbullet::Client.new(config['api_key'])
-deviceid = nil
-c.devices.on_complete do |r|
-  if r.success?
-    # arbitrarily pick the first one.
-    #puts r.body['devices']
-    deviceid = r.body['devices'][0]
-  end
-end
+deviceid = c.devices[0]
 
-resp = c.push_note(deviceid, options[:title], options[:body])
+resp = c.push_note(
+    receiver: deviceid,
+    params: {
+      title: options[:title],
+      body: options[:body]})
 
-unless resp.success?
-  puts "Error pushing note:"
-  puts resp.body
-end
+p resp

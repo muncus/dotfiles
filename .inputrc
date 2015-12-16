@@ -1,0 +1,13 @@
+# Never make an audible bell
+set bell-style visible
+
+# Completion settings - bigger lists, no paging.
+set completion-query-items 200
+set page-completions off
+set show-all-if-ambiguous on
+set skip-completed-text on
+
+# Deal with unicode
+set input-meta on
+set output-meta on
+set convert-meta off

@@ -25,6 +25,10 @@ OptionParser.new do |opts|
   opts.on("-b", "--body BODY", "Push body.") do |b|
     options[:body] = b
   end
+
+  opts.on("-l", "--link URL", "URL to push") do |b|
+    options[:link] = b
+  end
 end.parse!
 
 config = YAML.load_file(configfile)
@@ -35,11 +39,19 @@ config = YAML.load_file(configfile)
 
 c = Washbullet::Client.new(config['api_key'])
 deviceid = c.devices[0]
-
-resp = c.push_note(
-    receiver: deviceid,
-    params: {
-      title: options[:title],
-      body: options[:body]})
+if options[:link] != ''
+  resp = c.push_link(
+      receiver: deviceid,
+      params: {
+        title: options[:title],
+        url: options[:link],
+        body: options[:body]})
+else
+  resp = c.push_note(
+      receiver: deviceid,
+      params: {
+        title: options[:title],
+        body: options[:body]})
+end
 
 p resp

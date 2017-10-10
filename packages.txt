@@ -4,9 +4,9 @@
 #  apt-get -u dselect-upgrade
 git install
 irssi install
-python-jinja2
-python-markdown   install
-python-pip        install
-python-requests   install
+python-jinja2 install
+python-markdown install
+python-pip install
+python-requests install
 vim install
 workrave install

@@ -32,6 +32,11 @@ nmap \e :NERDTreeToggle<CR>
 map Q <silent>
 map K <silent>
 
+" Lightline
+let g:lightline = {
+      \ 'colorscheme': 'jellybeans',
+      \ }
+
 "---------------------------------
 " Options
 "---------------------------------
@@ -54,6 +59,8 @@ set ignorecase      " for pattern matching...
 set smartcase       " ...except when a mixed case is given
 set mps+=<:>        " matchpairs
 set ruler
+set laststatus=2
+set noshowmode
 
 " hide certain files in the file explorer
 let g:explHideFiles='\.class$,\.swp$'

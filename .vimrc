@@ -23,8 +23,8 @@ map \l <Esc>:set list!<CR>:set list?<CR>
 vnoremap > ><CR>gv
 vnoremap < <<CR>gv
 
-" Toggle colorcolumn, to show column 81 in red.
-nmap \c :set colorcolumn=81<CR>
+" Toggle colorcolumn, to show red after textwidth.
+nmap \c :set colorcolumn=+1<CR>
 nmap \C :set colorcolumn=<CR>
 
 " Visual movement for jk instead of line-wise.
@@ -63,6 +63,10 @@ set tabstop=2
 set smarttab
 set showmatch
 set formatoptions+=l
+
+" By default, color red the column after textwidth.
+" \{c,C} toggles this. see above.
+set colorcolumn=+1
 
 " Add some unicode decorations for important bits.
 set list

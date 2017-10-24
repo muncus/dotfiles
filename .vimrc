@@ -15,11 +15,17 @@ nmap \A :set formatoptions+=a<CR>:echo "autowrap enabled"<CR>
 map \p <Esc>:set paste!<CR>:set paste?<CR>
 " toggle wrap
 map \w <Esc>:set wrap!<CR>:set wrap?<CR>
+" toggle list mode
+map \l <Esc>:set list!<CR>:set list?<CR>
 
 " Make Visual Block selections not become unselected after
 " doing ">>" or "<<" on them
 vnoremap > ><CR>gv
 vnoremap < <<CR>gv
+
+" Toggle colorcolumn, to show column 81 in red.
+nmap \c :set colorcolumn=81<CR>
+nmap \C :set colorcolumn=<CR>
 
 " Visual movement for jk instead of line-wise.
 nmap j gj
@@ -27,6 +33,12 @@ nmap k gk
 
 " nerdtree explorer toggle.
 nmap \e :NERDTreeToggle<CR>
+
+" GitGutter - off by default.
+let g:gitgutter_enabled = 0
+nmap \g :GitGutterToggle<CR>
+
+
 
 " Squelch some annoying default behaviors..
 map Q <silent>
@@ -51,6 +63,10 @@ set tabstop=2
 set smarttab
 set showmatch
 set formatoptions+=l
+
+" Add some unicode decorations for important bits.
+set list
+set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
 
 set scrolloff=10
 
@@ -87,6 +103,9 @@ endif
 syntax on
 highlight Comment ctermfg=2
 highlight Statement ctermfg=5
+
+" Highlight trailing spaces.
+highlight SpecialKey ctermbg=Yellow guibg=Yellow
 
 
 "---------------------------------

@@ -38,6 +38,9 @@ nmap \e :NERDTreeToggle<CR>
 let g:gitgutter_enabled = 0
 nmap \g :GitGutterToggle<CR>
 
+" Arduino should use ctrl-p.
+let g:arduino_ctrlp_enabled=1
+
 
 
 " Squelch some annoying default behaviors..

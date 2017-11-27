@@ -1,6 +1,5 @@
 # swap files
-.*.swp
-.*.swo
+.*.sw?
 # compiled java and python files
 .*.class
 *.pyc

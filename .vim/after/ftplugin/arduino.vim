@@ -8,3 +8,6 @@ nmap <Leader>f :ArduinoUpload<CR>
 " Calling the method updates makeprg, so it builds for the correct board.
 nmap <Leader>F :ArduinoChooseBoard adafruit:nrf52:feather52<CR>
 set commentstring=//%s
+
+" see vim/after/compiler/arduino.vim for other settings.
+compiler arduino

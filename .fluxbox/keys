@@ -1,3 +1,12 @@
+# lock screen.
+Control Mod1 l :Exec cinnamon-screensaver-command -a
+
+#volume keys.
+# FIXME: these key names are wrong for my laptop.
+XF86AudioLowerVolume    :ExecCommand amixer sset -q Master,0 5%-
+XF86AudioRaiseVolume    :ExecCommand amixer sset -q Master,0 5%+
+XF86AudioMute           :ExecCommand amixer sset -q Master,0 toggle
+
 # click on the desktop to get menus
 OnDesktop Mouse1 :HideMenus
 OnDesktop Mouse2 :WorkspaceMenu

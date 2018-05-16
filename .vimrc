@@ -96,19 +96,6 @@ let g:explHideFiles='\.class$,\.swp$'
 "use filetype plugins
 filetype plugin on
 
-" let there be COLOR!!
-if has("terminfo")
- set t_Co=16
- set t_Sf=[3%p1%dm
- set t_Sb=[4%p1%dm
- set t_vb=
-else
- set t_Co=16
- set t_Sf=[3%dm
- set t_Sb=[4%dm
- set t_vb=
-endif
-
 "---------------------------------
 " Custom Coloring (i hate blue comments!)
 "---------------------------------

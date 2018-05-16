@@ -54,11 +54,8 @@ bind 'j' focus down
 #
 # default windows
 #
-screen -t irc 0
-screen -t git 1
-# screen -t local 0
-# screen -t mail 1 elm
-# screen -t 40 2 rlogin faui40
+#screen -t irc 0
+#screen -t git 1
 
 # caption always "%3n %t%? @%u%?%? [%h]%?"
 # hardstatus alwaysignore

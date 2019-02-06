@@ -37,6 +37,8 @@ case "$TERM" in
     xterm-color) color_prompt=yes;;
 esac
 
+export PATH=~/bin:$PATH
+
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)

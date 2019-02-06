@@ -4,9 +4,10 @@
 
 set -e
 
+config_file_name=".dotfiles_config"
 config_dir=$(dirname $0)
-if [ -f "${config_dir}/.config" ]; then
-  source ${config_dir}/.config
+if [ -f "${config_dir}/${config_file_name}" ]; then
+  source ${config_dir}/${config_file_name}
 fi
 
 basedir=${basedir:-$HOME/.dotfiles}
@@ -57,6 +58,9 @@ echo "Creating symlinks..."
 for path in .* ; do
   case $path in
     .|..|.git)
+      continue
+      ;;
+    ${config_file_name})
       continue
       ;;
     *)

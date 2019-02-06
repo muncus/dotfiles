@@ -17,4 +17,5 @@ vim_plugins_github=(
   tpope/vim-unimpaired
   w0rp/ale
   wellle/targets.vim
+  thiagoalessio/rainbow_levels.vim
 )

@@ -1,0 +1,31 @@
+##### Package-wide variables
+# Directory Name Checking
+#
+# Several programs check the directory name and refuse to function if
+# it does not match the name of the package being worked on.  (The
+# details are described in the individual manpages.)
+# These two variables control this behaviour, corresponding to the
+# --check-dirname-level and --check-dirname-regex command line options.
+# The possible values of DEVSCRIPTS_CHECK_DIRNAME_LEVEL are:
+#   0    never check the directory name
+#   1    check the directory name only if the program has changed directory
+#   2    always check the directory name
+# The variable DEVSCRIPTS_DIRNAME_REGEXP is a Perl regex which
+# defines what is considered a valid directory name for the source
+# package PACKAGE; if it includes a '/', then it must match the full
+# directory path, otherwise it must match the full directory name.
+#
+# The default settings are:
+DEVSCRIPTS_CHECK_DIRNAME_LEVEL=0
+# DEVSCRIPTS_CHECK_DIRNAME_REGEX='PACKAGE(-.+)?'
+
+##### debchange/dch
+#
+# Preserve the source tree dirname if the upstream version changes?
+DEBCHANGE_PRESERVE=no
+
+# Dont sign packages. I just build them for me, so signing is pointless.
+DEBUILD_DPKG_BUILDPACKAGE_OPTS="-uc -us"
+# Extra options given to lintian before any command-line options
+# specified.
+# DEBUILD_LINTIAN_OPTS=""

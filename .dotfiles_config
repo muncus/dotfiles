@@ -15,6 +15,7 @@ vim_plugins_github=(
   tpope/vim-endwise
   tpope/vim-repeat
   tpope/vim-unimpaired
+  tsandall/vim-rego
   w0rp/ale
   wellle/targets.vim
   thiagoalessio/rainbow_levels.vim

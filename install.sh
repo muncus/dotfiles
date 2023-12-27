@@ -4,7 +4,7 @@
 
 set -e
 
-config_file_name=".dotfiles_config"
+config_file_name=".dotfiles.config"
 config_dir=$(dirname $0)
 if [ -f "${config_dir}/${config_file_name}" ]; then
   source ${config_dir}/${config_file_name}

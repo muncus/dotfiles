@@ -1,0 +1,50 @@
+# What protocol to use when performing git operations. Supported values: ssh, https
+git_protocol: https
+# What editor gh should run when creating issues, pull requests, etc. If blank, will refer to environment.
+editor: !!null vim
+# When to interactively prompt. This is a global config that cannot be overridden by hostname. Supported values: enabled, disabled
+prompt: enabled
+# A pager program to send command output to, e.g. "less". Set the value to "cat" to disable the pager.
+pager:
+# Aliases allow you to create nicknames for gh commands
+aliases:
+    co: pr checkout
+    # PRs and issues that are assigned to me
+    mine: |
+        api -XGET search/issues -f q="assignee:@me is:open"
+        --template '{{range .items -}}
+        [{{.number | printf "%4.f" |autocolor "green" }}] {{.title}} ({{timeago .updated_at | autocolor "yellow+d" }})
+        {{- printf "\n  " }}{{.html_url}} {{println -}}
+        {{end}}'
+    # PRs that request my _individual_ review
+    reviews: |
+        api -XGET search/issues -f q="user-review-requested:@me is:open"
+        --template '{{range .items -}}
+        [{{.number | printf "%4.f" |autocolor "green" }}] {{.title}} ({{timeago .updated_at | autocolor "yellow+d" }})
+        {{- printf "\n  " }}{{.html_url}} {{println -}}
+        {{end}}'
+    # PRs that request aap-dpes review
+    teamreviews: |
+        api -XGET search/issues -f q="team-review-requested:GoogleCloudPlatform/aap-dpes is:open -review:approved no:assignee"
+        --template '{{range .items -}}
+        [{{.number | printf "%4.f" |autocolor "green" }}] {{.title}} ({{timeago .updated_at | autocolor "yellow+d" }})
+        {{- printf "\n  " }}{{.html_url}} {{println -}}
+        {{end}}'
+    # PRs that I have approved, but are not yet merged/closed
+    readytomerge: |
+        api -XGET search/issues -f q="reviewed-by:@me is:open"
+        --template '{{range .items -}}
+        [{{.number | printf "%4.f" |autocolor "green" }}] {{.title}} ({{timeago .updated_at | autocolor "yellow+d" }})
+        {{- printf "\n  " }}{{.html_url}} {{println -}}
+        {{end}}'
+    # global search, given some params.
+    gsearch: |
+        api -XGET search/issues -f q="$1"
+        --template '{{range .items -}}
+        [{{.number | printf "%4.f" |autocolor "green" }}] {{.title}} ({{timeago .updated_at | autocolor "yellow+d" }})
+        {{- printf "\n  " }}{{.html_url}} {{println -}}
+        {{end}}'
+# The path to a unix socket through which send HTTP connections. If blank, HTTP traffic will be handled by net/http.DefaultTransport.
+http_unix_socket:
+# What web browser gh should use when opening URLs. If blank, will refer to environment.
+browser:

@@ -5,3 +5,6 @@ alias fortune=/usr/games/fortune
 
 #for adding dates wherever i want.
 alias today='date +%Y-%m-%d'
+
+# authenticated curl against GCF:
+alias gcurl='curl  -H "Authorization: bearer $(gcloud auth print-identity-token)"'

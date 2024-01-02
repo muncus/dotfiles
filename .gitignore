@@ -6,3 +6,4 @@
 # include these so they are excluded from git status in the dotfiles repo.
 .vim/bundle/
 .vim/.netrwhist
+venv/

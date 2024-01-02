@@ -84,7 +84,8 @@ set colorcolumn=+1
 
 " Add some unicode decorations for important bits.
 set list
-set listchars=tab:»\ ,extends:›,precedes:‹,nbsp:·,trail:·
+set listchars=tab:»\ ,nbsp:·,trail:·
+set ambiwidth=single
 
 set scrolloff=10
 
@@ -133,3 +134,6 @@ autocmd BufReadCmd *.bfe :r! bcrypt -ro %
 
 " load local settings, if any.
 source ~/.vimlocal
+
+" disable ALE by default.
+let g:ale_enabled=0

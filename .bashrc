@@ -66,6 +66,9 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+# Ensure that unicode is always enabled.
+unicode_start 2>/dev/null
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -73,7 +76,14 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+# used by the gh-slocheck tool for gh searching.
+export GH_SLOCHECK_SEARCH_EXTRAS="sort:updated-asc "
+
 # Source local modifications, if present.
 if [ -f ~/.bashrc_local ]; then
     . ~/.bashrc_local
 fi
+
+export NVM_DIR="$HOME/.config//nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

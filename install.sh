@@ -42,13 +42,9 @@ if ! which git >/dev/null ; then
   exit 1
 fi
 
-if [ -d $basedir/.git ]; then
-  echo "Updating dotfiles using existing git..."
-  cd $basedir
-  git pull --quiet --rebase origin master
-else
+if [ ! -d $basedir/.git ]; then
   echo "Checking out dotfiles using git..."
-  rm -rf $basedir
+  # rm -rf $basedir
   git clone --quiet --depth=1 $repourl $basedir
 fi
 
@@ -63,6 +59,10 @@ for path in .* ; do
     ${config_file_name})
       continue
       ;;
+    .config)
+      # Handled separately below
+      continue
+      ;;
     *)
       symlink $basedir/$path $installdir/$path
       ;;
@@ -70,6 +70,12 @@ for path in .* ; do
 done
 symlink $basedir/.vim/vimrc $installdir/.vimrc
 symlink $basedir/.vim/gvimrc $installdir/.gvimrc
+
+# This method symlinks individual files only.
+echo "Symlinking in ${installdir}/.config ..."
+for path in $(find .config -type f) ; do
+  symlink $basedir/$path $installdir/$path
+done
 
 echo "Adding executables to ~/bin/..."
 mkdir -p $bindir

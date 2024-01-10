@@ -5,8 +5,8 @@
 # Specify [pattern] to update only repos that match the pattern.
 
 scriptdir=$(dirname $0)
-if [ -f ${scriptdir}/../.dotfiles_config ]; then
-  source ${scriptdir}/../.dotfiles_config
+if [ -f ${scriptdir}/../.dotfiles.config ]; then
+  source ${scriptdir}/../.dotfiles.config
 fi
 
 

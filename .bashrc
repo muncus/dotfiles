@@ -37,7 +37,7 @@ case "$TERM" in
     xterm-color) color_prompt=yes;;
 esac
 
-export PATH=~/bin:$PATH
+export PATH=~/bin:~/go/bin:$PATH
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -79,11 +79,16 @@ fi
 # used by the gh-slocheck tool for gh searching.
 export GH_SLOCHECK_SEARCH_EXTRAS="sort:updated-asc "
 
+export NVM_DIR="$HOME/.config//nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# kubernetes context
+source ~/bin/kube-ps1.sh
+kubeoff # disable k8s in prompt by default.
+PS1='[\u@\h:\w $(kube_ps1)]\$ '
+#
 # Source local modifications, if present.
 if [ -f ~/.bashrc_local ]; then
     . ~/.bashrc_local
 fi
-
-export NVM_DIR="$HOME/.config//nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

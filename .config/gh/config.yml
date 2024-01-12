@@ -44,7 +44,11 @@ aliases:
         [{{.number | printf "%4.f" |autocolor "green" }}] {{.title}} ({{timeago .updated_at | autocolor "yellow+d" }})
         {{- printf "\n  " }}{{.html_url}} {{println -}}
         {{end}}'
+    lmk: >
+        !( gh pr checks $1 --watch > /dev/null ; notify-send --urgency CRITICAL -t 0 "PR checks done" \
+              $(gh pr view $1 --json url --jq ".url") )&
 # The path to a unix socket through which send HTTP connections. If blank, HTTP traffic will be handled by net/http.DefaultTransport.
 http_unix_socket:
 # What web browser gh should use when opening URLs. If blank, will refer to environment.
 browser:
+version: "1"

@@ -1,0 +1,103 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  # Allow overriding with envvar.
+  TEST_PROJECT_ID:
+    sh: "echo ${TEST_PROJECT_ID:-muncus-dev2}"
+
+tasks:
+  default:
+    cmds:
+      - echo "try 'task --list'"
+    silent: true
+
+  go:tests:
+    desc: "run tests, including e2e tests"
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+        - gotestsum -f testname -- --timeout 30m {{.CLI_ARGS}}
+    env:
+      GOLANG_SAMPLES_E2E_TEST: true
+      GOLANG_SAMPLES_PROJECT_ID: "{{.TEST_PROJECT_ID}}"
+
+  go:testraw:
+    desc: "run tests, including e2e tests"
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+        - go test {{.CLI_ARGS}}
+    env:
+      GOLANG_SAMPLES_E2E_TEST: true
+      GOLANG_SAMPLES_PROJECT_ID: "{{.TEST_PROJECT_ID}}"
+
+  go:rtidy:
+    desc: "go mod tidy in this, and all sub-packages."
+    dir: "{{.USER_WORKING_DIR}}"
+    env:
+      packages:
+        sh: find . -name go.mod | xargs dirname
+    cmds:
+        - for p in ${packages}; do cd {{.USER_WORKING_DIR}}/${p} && echo ${p} ; go mod tidy ; done
+
+  go:ptidy:
+    desc: "tidy a package in a relative path. requires -- before path."
+    dir: "{{.USER_WORKING_DIR}}"
+    env:
+    cmds:
+        - cd {{.CLI_ARGS}} && go mod tidy
+
+  go:pupdate:
+    desc: "Update dependencies in specificed package. requires -- before path."
+    dir: "{{.USER_WORKING_DIR}}"
+    env:
+    cmds:
+        - cd {{.CLI_ARGS}} && go get -u && go mod tidy
+
+  go:subrun:
+    desc: "Run command in all subpackages. requires '--' before command"
+    dir: "{{.USER_WORKING_DIR}}"
+    ignore_error: true
+    env:
+      packages:
+        sh: find . -name go.mod | xargs dirname
+    cmds:
+        - for p in ${packages}; do cd {{.USER_WORKING_DIR}}/${p} && echo ${p} &&{{.CLI_ARGS}} || true ; done
+
+  ## Terraform helpers
+  tf:fmt:
+    desc: "terraform format."
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+     - terraform fmt -recursive
+
+  ## Python
+  py:flake:
+    desc: "run flake8 as done in python-docs-samples"
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+      - flake8 --show-source --builtin=gettext --max-complexity=20 --import-order-style=google '--exclude=.nox,.cache,env,lib,generated_pb2,*_pb2.py,*_pb2_grpc.py' --ignore=ANN101,E121,E123,E126,E203,E226,E24,E266,E501,E704,W503,W504,I202 --max-line-length=88 --application-import-names main,main_test,.nox,noxfile
+
+  py:fix:
+    desc: "run linters in fixing mode"
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+      - black .
+      # - isort .  #isort disagrees with flake8's import styleguides.
+
+
+  ## Java Helpers
+  java:updatepom:
+    desc: "find recent versions of libraries in pom.xml w/ maven"
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+      - mvn org.codehaus.mojo:versions-maven-plugin:2.11.0:use-latest-versions
+
+  ## Renovatebot
+  renovate:local:
+    desc: "debug renovate configs by running locally"
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+      - npx -p renovate renovate-config-validator $RENOVATE_CONFIG_FILE
+      - LOG_LEVEL=debug npx renovate --platform local --require-config=ignored  
+

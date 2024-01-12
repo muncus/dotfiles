@@ -1,6 +1,6 @@
 [user]
     name = "Marc Dougherty"
-    email = "muncus@gmail.com"
+    email = "muncus@users.noreply.github.com"
 
 [github]
   user = muncus
@@ -16,6 +16,9 @@
     current-branch = !sh -c 'git branch | grep \"*\" | cut -d \" \" -f 2' -
     today = diff --stat 'HEAD@{midnight}'
     yesterday = diff --stat 'HEAD@{yesterday}' 'HEAD@{midnight}'
+    xl = log --graph --pretty=format:'commit: %C(red)<%H>%Creset %C(bold magenta)%d %Creset%ndate: %C(bold yellow)%cd %Creset%C(yellow)%cr%Creset%nauthor: %C(bold blue)%an%Creset %C(blue)<%ae>%Creset%n%C(cyan)%s%n%Creset'
+    rm-squashmerged-branches = !git branch --format '%(refname:short) %(upstream:track)' | awk '$2 == \"[gone]\" { print $1 }' | xargs --no-run-if-empty git branch -D
+
 
     #svn aliases.
     svnup = svn rebase
@@ -26,6 +29,13 @@
 
 [push]
     default = current
+    autoSetupRemote = true
 
 [include]
-  path = ~/.gitconfig_local
+    path = ~/.gitconfig_local
+[credential "https://github.com"]
+    helper = !/usr/bin/gh auth git-credential
+[rerere]
+    enabled = true
+[remote "origin"]
+    prune = true

@@ -1,0 +1,92 @@
+# Ansible playbook to reconstruct my work laptop.
+# run with ansible-playbook -b -K
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  vars:
+    primary_user: "muncus"
+  tasks:
+  - name: udev rules
+    copy:
+      src: "udevrules/"
+      dest: /etc/udev/rules.d/
+      backup: true
+  - name: "restart udev"
+    ansible.builtin.command: /usr/bin/systemctl restart udev
+    become: yes
+    become_user: root
+  - name: Install apt tools
+    ansible.builtin.apt:
+      pkg:
+      - software-properties-common # installs add-apt-repository tool
+  - name: "add repo: gh"
+    ansible.builtin.command: /usr/sbin/add-apt-repository -b https://cli.github.com/packages
+    become: yes
+    become_user: root
+  - name: "update apt"
+    ansible.builtin.command: /usr/bin/apt-get update
+    become: yes
+    become_user: root
+  - name: Install packages
+    ansible.builtin.apt:
+      pkg:
+      - code # vscode
+      - docker-ce
+      - docker-ce-cli
+      - docker-ce-cli
+      - gh # github cli
+      - git
+      - golang
+      - google-cloud-sdk
+      - kubectl
+      - visual-studio-code-google3
+  - name: install Taskfile.dev
+    ansible.builtin.command:
+      cmd: /usr/bin/go install github.com/go-task/task/v3/cmd/task@latest
+    become_user: "{{ vars.primary_user }}"
+  - name: install gotestsum
+    ansible.builtin.command:
+      cmd: /usr/bin/go install gotest.tools/gotestsum@latest
+    become_user: "{{ vars.primary_user }}"
+  - name: install cloud-sql-proxy
+    ansible.builtin.command:
+      cmd: /usr/bin/go install github.com/GoogleCloudPlatform/cloud-sql-proxy/v2@latest
+    become_user: "{{ vars.primary_user }}"
+  - name: install kubectx
+    ansible.builtin.command:
+      cmd: /usr/bin/go install github.com/ahmetb/kubectx/cmd/kubectx@latest
+    become_user: "{{ vars.primary_user }}"
+  - name: install kubens
+    ansible.builtin.command:
+      cmd: /usr/bin/go install github.com/ahmetb/kubectx/cmd/kubens@latest
+    become_user: "{{ vars.primary_user }}"
+  - name: "capslock -> ctrl"
+    ansible.builtin.command: gsettings set org.gnome.desktop.input-sources xkb-options "['ctrl:nocaps']"
+    become_user: "{{ vars.primary_user }}"
+  - name: "Gnome: trackball scrolling"
+    ansible.builtin.command: gsettings set org.gnome.desktop.peripherals.trackball scroll-wheel-emulation-button 8
+    become_user: "{{ vars.primary_user }}"
+  - name: "Gnome: embiggen fonts"
+    ansible.builtin.command: gsettings set org.gnome.desktop.interface text-scaling-factor 1.25
+    become_user: "{{ vars.primary_user }}"
+  - name: "Gnome: dark mode"
+    ansible.builtin.command: gsettings set org.gnome.desktop.interface color-scheme '"prefer-dark"'
+    become_user: "{{ vars.primary_user }}"
+  - name: "Gnome: workspaces on both monitors"
+    ansible.builtin.command: gsettings set org.gnome.mutter workspaces-only-on-primary false
+    become_user: "{{ vars.primary_user }}"
+  - name: Install nvm
+    become_user: "{{ vars.primary_user }}"
+    ansible.builtin.shell: >
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+  - name: Install kube-ps1
+    become_user: "{{ vars.primary_user }}"
+    ansible.builtin.shell: >
+      curl -o ~/bin/kube-ps1.sh https://raw.githubusercontent.com/jonmosco/kube-ps1/master/kube-ps1.sh
+
+  # what else?
+  # - pull my dotfiles down and install them.
+  # TODO: this needs creds because the repo is private. either make public or split into "system" vs "user" configs.
+  # - name: "install streamdeck"
+  #   ansible.builtin.command: go install github.com/muncus/my-streamdeck/cmd/my-streamdeck@latest
+  #   become_user: "{{ vars.primary_user }}"

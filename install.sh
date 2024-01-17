@@ -76,6 +76,7 @@ echo "Symlinking in ${installdir}/.config ..."
 for path in $(find .config -type f) ; do
   symlink $basedir/$path $installdir/$path
 done
+symlink $basedir/Taskfile.yaml $installdir/Taskfile.yaml
 
 echo "Adding executables to ~/bin/..."
 mkdir -p $bindir

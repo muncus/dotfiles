@@ -79,6 +79,9 @@ fi
 # used by the gh-slocheck tool for gh searching.
 export GH_SLOCHECK_SEARCH_EXTRAS="sort:updated-asc "
 
+# gcloud + kubectl auth
+export USE_GKE_GCLOUD_AUTH_PLUGIN=1
+
 export NVM_DIR="$HOME/.config//nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" --no-use  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

@@ -20,45 +20,63 @@
       pkg:
       - software-properties-common # installs add-apt-repository tool
   - name: "add repo: gh"
-    ansible.builtin.command: /usr/sbin/add-apt-repository -b https://cli.github.com/packages
-    become: yes
-    become_user: root
-  - name: "update apt"
-    ansible.builtin.command: /usr/bin/apt-get update
-    become: yes
-    become_user: root
+    block:
+      - name: gh repo key
+        ansible.builtin.get_url:
+          url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+          dest: /usr/share/keyrings/githubcli-archive-keyring.gpg
+
+      - name: gh repo add
+        ansible.builtin.apt_repository:
+          repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main"
+          state: present
+  - name: "add repo: gcloud"
+    block:
+      - name: gcloud repo key
+        ansible.builtin.get_url:
+          url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+          dest: /usr/share/keyrings/gcloud-keyring.armored.gpg
+      - name: gcloud repo key, dearmor
+        ansible.builtin.command: gpg  --dearmor --yes -o /usr/share/keyrings/gcloud-keyring.gpg /usr/share/keyrings/gcloud-keyring.armored.gpg
+
+      - name: gcloud repo add
+        ansible.builtin.apt_repository:
+          repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/gcloud-keyring.gpg] https://packages.cloud.google.com/apt cloud-sdk main"
+          state: present
   - name: Install packages
     ansible.builtin.apt:
       pkg:
-      - code # vscode
-      - docker-ce
-      - docker-ce-cli
-      - docker-ce-cli
+      - docker.io
       - gh # github cli
       - git
-      - golang
-      - google-cloud-sdk
+      - golang-1.21
+      - google-cloud-cli
+      - google-cloud-cli-gke-gcloud-auth-plugin
       - kubectl
-      - visual-studio-code-google3
+  - name: Install kube-ps1
+    become_user: "{{ vars.primary_user }}"
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/jonmosco/kube-ps1/master/kube-ps1.sh
+      dest: ~/bin/kube-ps1.sh
   - name: install Taskfile.dev
     ansible.builtin.command:
-      cmd: /usr/bin/go install github.com/go-task/task/v3/cmd/task@latest
+      cmd: /usr/bin/env go install github.com/go-task/task/v3/cmd/task@latest
     become_user: "{{ vars.primary_user }}"
   - name: install gotestsum
     ansible.builtin.command:
-      cmd: /usr/bin/go install gotest.tools/gotestsum@latest
+      cmd: /usr/bin/env go install gotest.tools/gotestsum@latest
     become_user: "{{ vars.primary_user }}"
   - name: install cloud-sql-proxy
     ansible.builtin.command:
-      cmd: /usr/bin/go install github.com/GoogleCloudPlatform/cloud-sql-proxy/v2@latest
+      cmd: /usr/bin/env go install github.com/GoogleCloudPlatform/cloud-sql-proxy/v2@latest
     become_user: "{{ vars.primary_user }}"
   - name: install kubectx
     ansible.builtin.command:
-      cmd: /usr/bin/go install github.com/ahmetb/kubectx/cmd/kubectx@latest
+      cmd: /usr/bin/env go install github.com/ahmetb/kubectx/cmd/kubectx@latest
     become_user: "{{ vars.primary_user }}"
   - name: install kubens
     ansible.builtin.command:
-      cmd: /usr/bin/go install github.com/ahmetb/kubectx/cmd/kubens@latest
+      cmd: /usr/bin/env go install github.com/ahmetb/kubectx/cmd/kubens@latest
     become_user: "{{ vars.primary_user }}"
   - name: "capslock -> ctrl"
     ansible.builtin.command: gsettings set org.gnome.desktop.input-sources xkb-options "['ctrl:nocaps']"
@@ -76,13 +94,17 @@
     ansible.builtin.command: gsettings set org.gnome.mutter workspaces-only-on-primary false
     become_user: "{{ vars.primary_user }}"
   - name: Install nvm
-    become_user: "{{ vars.primary_user }}"
-    ansible.builtin.shell: >
-      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-  - name: Install kube-ps1
-    become_user: "{{ vars.primary_user }}"
-    ansible.builtin.shell: >
-      curl -o ~/bin/kube-ps1.sh https://raw.githubusercontent.com/jonmosco/kube-ps1/master/kube-ps1.sh
+    block:
+    - name: nvm dir
+      become_user: "{{ vars.primary_user }}"
+      ansible.builtin.file:
+        path: ~/.config/nvm
+        state: directory
+        mode: '0755'
+    - name: install nvm
+      become_user: "{{ vars.primary_user }}"
+      ansible.builtin.shell: >
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 
   # what else?
   # - pull my dotfiles down and install them.

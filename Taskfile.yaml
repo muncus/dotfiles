@@ -47,12 +47,23 @@ tasks:
     cmds:
         - cd {{.CLI_ARGS}} && go mod tidy
 
-  go:pupdate:
-    desc: "Update dependencies in specificed package. requires -- before path."
+  go:update:
+    desc: "Update provided dependencies in current package. requires -- before path."
     dir: "{{.USER_WORKING_DIR}}"
     env:
     cmds:
-        - cd {{.CLI_ARGS}} && go get -u && go mod tidy
+        - go get -u {{.CLI_ARGS}} && go mod tidy
+
+  go:rupdate:
+    desc: "recursively update the provided package. requires -- before package."
+    dir: "{{.USER_WORKING_DIR}}"
+    ignore_error: true
+    env:
+      packages:
+        sh: find . -name go.mod | xargs dirname
+    cmds:
+        - for p in ${packages}; do cd {{.USER_WORKING_DIR}}/${p} && echo ${p} &&go get -u {{.CLI_ARGS}} ; done
+
 
   go:subrun:
     desc: "Run command in all subpackages. requires '--' before command"
@@ -101,3 +112,21 @@ tasks:
       - npx -p renovate renovate-config-validator $RENOVATE_CONFIG_FILE
       - LOG_LEVEL=debug npx renovate --platform local --require-config=ignored  
 
+  # GCP project mangament
+  golang-samples:enable:
+    desc: enable an api in all golang-samples projects
+    env:
+      GO_SAMPLES_PROJECTS: "golang-samples-tests golang-samples-tests-2 golang-samples-tests-3 golang-samples-tests-4 golang-samples-tests-5"
+
+    cmds:
+      - for proj in $GO_SAMPLES_PROJECTS; do gcloud --configuration=goog --project $proj services enable {{.CLI_ARGS}} ; done
+
+  gcloud:goog:
+    cmds:
+      - gcloud config configurations activate goog
+      - gcloud auth login --update-adc
+
+  gcloud:joonix:
+    cmds:
+      - gcloud config configurations activate joonix
+      - gcloud auth login --update-adc

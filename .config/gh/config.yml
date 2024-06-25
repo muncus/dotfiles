@@ -9,6 +9,13 @@ pager:
 # Aliases allow you to create nicknames for gh commands
 aliases:
     co: pr checkout
+    # PRs I created
+    myprs: |
+        api -XGET search/issues -f q="author:@me is:open"
+        --template '{{range .items -}}
+        [{{.number | printf "%4.f" |autocolor "green" }}] {{.title}} ({{timeago .updated_at | autocolor "yellow+d" }})
+        {{- printf "\n  " }}{{.html_url}} {{println -}}
+        {{end}}'
     # PRs and issues that are assigned to me
     mine: |
         api -XGET search/issues -f q="assignee:@me is:open"
@@ -25,14 +32,27 @@ aliases:
         {{end}}'
     # PRs that request aap-dpes review
     teamreviews: |
-        api -XGET search/issues -f q="team-review-requested:GoogleCloudPlatform/aap-dpes is:open -review:approved no:assignee"
+        api -XGET search/issues -f q="team-review-requested:GoogleCloudPlatform/$1 is:open -review:approved no:assignee"
+        --template '{{range .items -}}
+        [{{.number | printf "%4.f" |autocolor "green" }}] {{.title}} ({{timeago .updated_at | autocolor "yellow+d" }})
+        {{- printf "\n  " }}{{.html_url}} {{println -}}
+        {{end}}'
+    # PRs that request my _individual_ review
+    reviews:go: |
+        api -XGET search/issues -f q="repo:GoogleCloudPlatform/golang-samples team-review-requested:GoogleCloudPlatform/go-samples-reviewers is:open draft:false"
         --template '{{range .items -}}
         [{{.number | printf "%4.f" |autocolor "green" }}] {{.title}} ({{timeago .updated_at | autocolor "yellow+d" }})
         {{- printf "\n  " }}{{.html_url}} {{println -}}
         {{end}}'
     # PRs that I have approved, but are not yet merged/closed
     readytomerge: |
-        api -XGET search/issues -f q="reviewed-by:@me is:open"
+        api -XGET search/issues -f q="reviewed-by:@me review:approved is:open status:success"
+        --template '{{range .items -}}
+        [{{.number | printf "%4.f" |autocolor "green" }}] {{.title}} ({{timeago .updated_at | autocolor "yellow+d" }})
+        {{- printf "\n  " }}{{.html_url}} {{println -}}
+        {{end}}'
+    followup: |
+        api -XGET search/issues -f q="mentions:@me is:open status:success"
         --template '{{range .items -}}
         [{{.number | printf "%4.f" |autocolor "green" }}] {{.title}} ({{timeago .updated_at | autocolor "yellow+d" }})
         {{- printf "\n  " }}{{.html_url}} {{println -}}
@@ -47,6 +67,7 @@ aliases:
     lmk: >
         !( gh pr checks $1 --watch > /dev/null ; notify-send --urgency CRITICAL -t 0 "PR checks done" \
               $(gh pr view $1 --json url --jq ".url") )&
+
 # The path to a unix socket through which send HTTP connections. If blank, HTTP traffic will be handled by net/http.DefaultTransport.
 http_unix_socket:
 # What web browser gh should use when opening URLs. If blank, will refer to environment.

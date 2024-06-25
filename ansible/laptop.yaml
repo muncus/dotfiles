@@ -74,6 +74,10 @@
     ansible.builtin.command:
       cmd: /usr/bin/env go install github.com/ahmetb/kubectx/cmd/kubectx@latest
     become_user: "{{ vars.primary_user }}"
+  - name: install glow
+    ansible.builtin.command:
+      cmd: /usr/bin/go install github.com/charmbracelet/glow@latest
+    become_user: "{{ vars.primary_user }}"
   - name: install kubens
     ansible.builtin.command:
       cmd: /usr/bin/env go install github.com/ahmetb/kubectx/cmd/kubens@latest
